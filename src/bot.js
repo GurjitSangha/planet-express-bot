@@ -32,7 +32,7 @@ bot.startRTM(function(err,bot,payload) {
   }
 
   controller.hears(['Failed:'], ["direct_message","direct_mention","mention","ambient"], function(bot, message) {
-    console.log('Failed: ' + message);
+    console.log('Failed: ' + message.inspect);
     var split = message.text.split(' ');
     var user = split[2].split("'")[0];
     counts[user]++;
@@ -46,7 +46,7 @@ bot.startRTM(function(err,bot,payload) {
   });
 
   controller.hears(['Fixed:'], ["direct_message","direct_mention","mention","ambient"], function(bot, message) {
-    console.log('Fixed: ' + message);
+    console.log('Fixed: ' + message.inspect);
     var split = message.text.split(' ');
     var user = split[2].split("'")[0];
     if (counts[user] > 0) {
@@ -56,7 +56,7 @@ bot.startRTM(function(err,bot,payload) {
   });
 
   controller.hears(['Success:'], ["direct_message","direct_mention","mention","ambient"], function(bot, message){
-    console.log('Success: ' + message);
+    console.log('Success: ' + message.inspect);
     var split = message.text.split(' ');
     var user = split[2].split("'")[0];
     counts[user] = 0;
@@ -65,7 +65,7 @@ bot.startRTM(function(err,bot,payload) {
   })
 
   controller.hears(['rename'], ["direct_mention"], function(bot, message){
-    console.log('Rename: ' + message);
+    console.log('Rename: ' + message.inspect);
     var split = message.text.split(' ');
     var github = split[1];
     var newName = split[2];
@@ -75,7 +75,7 @@ bot.startRTM(function(err,bot,payload) {
   })
 
   controller.hears(['victory'], ["direct_mention"], function(bot, message){
-    console.log('Victory: ' + message);
+    console.log('Victory: ' + message.inspect);
     var split = message.text.split(' ', 3);
     console.log(split);
     var github = split[1];
