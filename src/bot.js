@@ -1,7 +1,10 @@
 var Botkit = require('botkit');
 var controller = Botkit.slackbot();
-var settings = require('./settings'); // {token: your_slack_api_token}
-var bot = controller.spawn(settings);
+var config = require('./config'); // {token: your_slack_api_token}
+var bot = controller.spawn({
+  token: config('SLACK_TOKEN')
+});
+
 bot.startRTM(function(err,bot,payload) {
   if (err) {
     throw new Error('Could not connect to Slack');
@@ -76,3 +79,5 @@ bot.startRTM(function(err,bot,payload) {
     bot.reply(message, 'New success message for ' + names[github] + ' is: ' + newVictory);
   })
 });
+
+module.exports = bot;
