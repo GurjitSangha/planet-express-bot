@@ -42,5 +42,11 @@ bot.startRTM(function(err,bot,payload) {
     bot.reply(message, 'Well done ' + names[user] + '! Your strikes have been reset');
   });
 
-
+  controller.hears(['Success:'], ["direct_message","direct_mention","mention","ambient"], function(bot, message){
+    var split = message.text.split(' ');
+    var user = split[2].split("'")[0];
+    counts[user] = 0;
+    
+    bot.reply(message, 'Good news everyone! :farnsworth:');
+  })
 });
