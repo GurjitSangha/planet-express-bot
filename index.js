@@ -1,8 +1,7 @@
 var Botkit = require('botkit');
 var controller = Botkit.slackbot();
-var bot = controller.spawn({
-  token: 'xoxb-75734614263-9IJdYYiOlFkiGAdWjpMcpaMs'
-})
+var settings = require('./settings'); // {token: your_slack_api_token}
+var bot = controller.spawn(settings);
 bot.startRTM(function(err,bot,payload) {
   if (err) {
     throw new Error('Could not connect to Slack');
@@ -42,4 +41,6 @@ bot.startRTM(function(err,bot,payload) {
 
     bot.reply(message, 'Well done ' + names[user] + '! Your strikes have been reset');
   });
+
+
 });
