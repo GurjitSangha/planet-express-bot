@@ -46,7 +46,15 @@ bot.startRTM(function(err,bot,payload) {
     var split = message.text.split(' ');
     var user = split[2].split("'")[0];
     counts[user] = 0;
-    
+
     bot.reply(message, 'Good news everyone! :farnsworth:');
+  })
+
+  controller.hears(['rename'], ["direct_mention"], function(bot, message){
+    var split = message.text.split(' ');
+    var github = split[1];
+    var newName = split[2];
+    names[github] = newName;
+    bot.reply(message, 'I will now call ' + github + ' ' + newName);
   })
 });
