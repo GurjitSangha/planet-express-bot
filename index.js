@@ -21,6 +21,13 @@ bot.startRTM(function(err,bot,payload) {
     'GurjitSangha': 'Gary'
   }
 
+  var victory = {
+    'jw1540': 'Good news everyone! :farnsworth:',
+    'Geit': 'Good news everyone! :farnsworth:',
+    'MarkSG93': 'Good news everyone! :farnsworth:',
+    'GurjitSangha': 'Good news everyone! :farnsworth:'
+  }
+
   controller.hears(['Failed:'], ["direct_message","direct_mention","mention","ambient"], function(bot, message) {
     var split = message.text.split(' ');
     var user = split[2].split("'")[0];
@@ -47,7 +54,7 @@ bot.startRTM(function(err,bot,payload) {
     var user = split[2].split("'")[0];
     counts[user] = 0;
 
-    bot.reply(message, 'Good news everyone! :farnsworth:');
+    bot.reply(message, victory[user]);
   })
 
   controller.hears(['rename'], ["direct_mention"], function(bot, message){
@@ -55,6 +62,17 @@ bot.startRTM(function(err,bot,payload) {
     var github = split[1];
     var newName = split[2];
     names[github] = newName;
+
     bot.reply(message, 'I will now call ' + github + ' ' + newName);
+  })
+
+  controller.hears(['victory'], ["direct_mention"], function(bot, message){
+    var split = message.text.split(' ', 3);
+    console.log(split);
+    var github = split[1];
+    var newVictory = split[2];
+    victory[github] = newVictory;
+
+    bot.reply(message, 'New success message for ' + names[github] + ' is: ' + newVictory);
   })
 });
