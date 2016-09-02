@@ -15,15 +15,22 @@ bot.startRTM(function(err,bot,payload) {
     'GurjitSangha': 0
   };
 
+  var names = {
+    'jw1540': 'Joe',
+    'Geit': 'Rory',
+    'MarkSG93': 'Mark',
+    'GurjitSangha': 'Gary'
+  }
+
   controller.hears(['Failed:'], ["direct_message","direct_mention","mention","ambient"], function(bot, message) {
     var split = message.text.split(' ');
     var user = split[2].split("'")[0];
     counts[user]++;
 
     if (counts[user] < 3)
-      bot.reply(message, 'Strike ' + counts[user] + ' for ' + user + '!');
+      bot.reply(message, 'Strike ' + counts[user] + ' for ' + names[user] + '!');
     else {
-      bot.reply(message, 'Strike ' + counts[user] + ' for ' + user + '! You\'re out! :p45:');
+      bot.reply(message, 'Strike ' + counts[user] + ' for ' + names[user] + '! You\'re out! :p45:');
       counts[user] = 0;
     }
   });
@@ -33,6 +40,6 @@ bot.startRTM(function(err,bot,payload) {
     var user = split[2].split("'")[0];
     counts[user] = 0;
 
-    bot.reply(message, 'Well done ' + user + '! Your strikes have been reset');
+    bot.reply(message, 'Well done ' + names[user] + '! Your strikes have been reset');
   });
 });
