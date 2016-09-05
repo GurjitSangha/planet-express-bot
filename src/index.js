@@ -41,23 +41,23 @@ var victory = {
 app.post('/circle_build', (req, res) => {
   var payload = req.body.payload;
   var user = payload.committer_name;
-  var outcome  = payload.outcome;
+  var status  = payload.status;
 
-  switch(outcome){
+  switch(status){
     case 'failed':
-      outcomeFailed(user);
+      statusFailed(user);
       break;
     case 'success':
-      outcomePositive(user);
+      statusSuccess(user);
       break;
     case 'fixed':
-      outcomeFixed(user);
+      statusFixed(user);
       break;
   }
   res.send('OK')
 })
 
-function outcomeFailed(user) {
+function statusFailed(user) {
   counts[user]++;
   if (counts[user] < 3)
     slack.send({text: 'Strike ' + counts[user] + ' for ' + names[user] + '!'});
@@ -67,15 +67,15 @@ function outcomeFailed(user) {
   }
 }
 
-function outcomeSuccess(user) {
+function statusSuccess(user) {
   slack.send({text: victory[user]});
 }
 
-function outcomePositive(user) {
+function statusFixed(user) {
   if (counts[user] === 0)
-    slack.send({text: victory[user]});
+    slack.send({text: 'Well done ' + names[user] + '!'});
   else {
     counts[user] = 0;
-    slack.send({text: victory[user] + ' ' + user + ' has fixed their build and their strikes have been reset'})
+    slack.send({text: 'Well done ' + names[user] + '! Your strikes have been reset'})
   }
 }
