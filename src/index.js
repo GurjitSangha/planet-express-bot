@@ -3,6 +3,7 @@ var config = require('./config');
 var bodyParser = require('body-parser');
 var Slack = require('node-slack');
 var slack = new Slack(config('WEBHOOK_URL'));
+var http = require('http');
 
 var app = express();
 
@@ -16,6 +17,10 @@ app.listen(config('PORT'), (err) => {
 
   console.log(`\n🚀  Planet Express Bot lives on PORT ${config('PORT')} 🚀`)
 });
+
+setInterval(function() {
+    http.get("http://planet-express-bot.herokuapp.com");
+}, 300000); // every 5 minutes (300000)
 
 var counts = {
   'Joe Williams': 0,
