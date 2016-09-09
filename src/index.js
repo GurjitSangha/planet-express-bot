@@ -39,8 +39,8 @@ var names = {
 var victory = {
   'Joe Williams': 'Good news everyone! :farnsworth:',
   'Rory King': 'Good news everyone! :farnsworth:',
-  'MarkSG93': 'Good news everyone! :farnsworth:',
-  'GurjitSangha': 'Good news everyone! :farnsworth:'
+  'Mark Griffiths': 'Good news everyone! :farnsworth:',
+  'Gurjit Sangha': 'Good news everyone! :farnsworth:'
 }
 
 app.post('/circle_build', (req, res) => {
