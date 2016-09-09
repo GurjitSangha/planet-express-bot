@@ -10,7 +10,9 @@ var app = express();
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
+app.get('/', (req, res) => {
+  res.send('\n 👋 🌍 \n')
+});
 
 app.listen(config('PORT'), (err) => {
   if (err) throw err
