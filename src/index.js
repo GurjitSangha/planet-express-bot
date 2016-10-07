@@ -29,6 +29,13 @@ var counts = {
   'Gurjit Sangha': 0
 };
 
+var totals = {
+  'Joe Williams': 0,
+  'Rory King': 0,
+  'Mark Griffiths': 0,
+  'Gurjit Sangha': 0
+}
+
 var names = {
   'Joe Williams': 'Joe',
   'Rory King': 'Rory',
@@ -69,6 +76,8 @@ function statusFailed(user) {
   else {
     slack.send({text: 'Strike ' + counts[user] + ' for ' + names[user] + '! You\'re out! :p45:'});
     counts[user] = 0;
+    totals[user]++;
+    slack.send({text: 'Total P45\'s for ' + names[user] + ': ' + totals[user]});
   }
 }
 
