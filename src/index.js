@@ -69,6 +69,12 @@ app.post('/circle_build', (req, res) => {
   res.send('OK')
 })
 
+app.post('/custom', (req, res) => {
+  var message = req.body.message;
+  slack.send({text: message});
+  res.send('OK');
+})
+
 function statusFailed(user) {
   counts[user]++;
   if (counts[user] < 3)
