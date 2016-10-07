@@ -10,7 +10,7 @@ var app = express();
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
+app.get('/', (req, res) => { res.send('\n👋 🌍\n') });
 
 app.listen(config('PORT'), (err) => {
   if (err) throw err
@@ -54,6 +54,8 @@ app.post('/circle_build', (req, res) => {
   var payload = req.body.payload;
   var user = payload.committer_name;
   var status  = payload.status;
+  if (payload.subject === 'Merged branch dev into dev')
+    slack.send({text: ':alarm: Merge dev into dev :alarm:'});
 
   switch(status){
     case 'failed':
