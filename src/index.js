@@ -4,6 +4,8 @@ var bodyParser = require('body-parser');
 var Slack = require('node-slack');
 var slack = new Slack(config('WEBHOOK_URL'));
 var http = require('http');
+var CronJob = require('cron').CronJob;
+var axios = require('axios');
 
 var app = express();
 
@@ -101,3 +103,14 @@ function statusFixed(user) {
     slack.send({text: 'Well done ' + names[user] + '! Your strikes have been reset'})
   }
 }
+
+var job = new CronJob('00 00 09 * * 1-5', function() {
+  axios.get('http://quotes.rest/qod.json')
+    .then(function(res) {
+      var quote = res.data.contents.quotes[0];
+      slack.send({text: 'Quote of the Day: ' + quote.quote + ' - ' + quote.author});
+    })
+    .catch(function(err) {
+      console.log(err);
+    })
+}, null, true, 'Europe/London')
