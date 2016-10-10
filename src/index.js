@@ -56,7 +56,7 @@ app.post('/circle_build', (req, res) => {
   var payload = req.body.payload;
   var user = payload.committer_name;
   var status  = payload.status;
-  if (payload.subject === 'Merged branch dev into dev')
+  if (payload.subject === 'Merged branch dev into dev' || payload.subject === "Merge branch 'dev' of github.com:sky-uk/twitter-sentiment into dev")
     slack.send({text: ':alarm: Merge dev into dev :alarm:'});
 
   switch(status){
