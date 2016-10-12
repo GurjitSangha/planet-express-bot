@@ -104,11 +104,62 @@ function statusFixed(user) {
   }
 }
 
-var job = new CronJob('00 00 09 * * 1-5', function() {
+var quoteJob = new CronJob('00 00 09 * * 1-5', function() {
   axios.get('http://quotes.rest/qod.json')
     .then(function(res) {
       var quote = res.data.contents.quotes[0];
       slack.send({text: 'Quote of the Day: ' + quote.quote + ' - ' + quote.author});
+    })
+    .catch(function(err) {
+      console.log(err);
+    })
+}, null, true, 'Europe/London')
+
+var weatherJob = new CronJob('00 00 17 * * 1-5', function() {
+  axios.get('https://api.darksky.net/forecast/' + config('FORECAST_TOKEN') + '/53.790853,-1.53188?units=uk2')
+    .then(function(res) {
+      var tomorrow = res.data.daily.data[1];
+
+      var emoji;
+      switch(tomorrow.icon) {
+        case 'clear-day':
+          emoji = ':sunny:';
+          break;
+        case 'clear-night':
+          emoji = ':crescent_moon:';
+          break;
+        case 'rain':
+          emoji = ':rain_cloud:';
+          break;
+        case 'snow':
+          emoji = ':snowman:';
+          break;
+        case 'sleet':
+          emoji = ':snow_cloud:';
+          break;
+        case 'wind':
+          emoji = ':dash:';
+          break;
+        case 'fog':
+          emoji = ':fog:';
+          break;
+        case 'cloudy':
+          emoji = ':cloud:';
+          break;
+        case 'partly-cloudy-day':
+          emoji = ':partly_sunny:';
+          break;
+        case 'partly-cloudy-night':
+          emoji = ':new_moon:';
+          break;
+        default:
+          emoji = ':sun_with_face:';
+          break;
+      }
+
+      slack.send({
+        text: emoji + ' Tomorrow\'s Weather: ' + tomorrow.summary + ' ' + emoji
+      });
     })
     .catch(function(err) {
       console.log(err);

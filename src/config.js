@@ -7,7 +7,8 @@ var config = {
   ENV: process.env.NODE_ENV,
   PORT: process.env.PORT,
   WEBHOOK_URL: process.env.WEBHOOK_URL,
-  SLACK_TOKEN: process.env.SLACK_TOKEN
+  SLACK_TOKEN: process.env.SLACK_TOKEN,
+  FORECAST_TOKEN: process.env.FORECAST_TOKEN
 }
 
 module.exports = (key) => {
