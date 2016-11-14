@@ -70,7 +70,7 @@ app.post('/circle_build', (req, res) => {
       statusFixed(user);
       break;
   }
-  res.send('OK')
+  res.send('OK');
 })
 
 app.post('/custom', (req, res) => {
@@ -105,10 +105,12 @@ function statusFixed(user) {
 }
 
 var quoteJob = new CronJob('00 00 09 * * 1-5', function() {
-  axios.get('http://quotes.rest/qod.json')
+  axios.get('https://api.icndb.com/jokes/random')
     .then(function(res) {
-      var quote = res.data.contents.quotes[0];
-      slack.send({text: 'Quote of the Day: ' + quote.quote + ' - ' + quote.author});
+      if (res.data.type === 'success') {
+        var joke = res.data.value.joke;
+        slack.send({text: 'Daily Chuck Norris Joke: ' + joke});
+      }
     })
     .catch(function(err) {
       console.log(err);
