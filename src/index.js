@@ -5,7 +5,7 @@ var Slack = require('node-slack');
 var slack = new Slack(config('WEBHOOK_URL'));
 var http = require('http');
 var CronJob = require('cron').CronJob;
-var axios = require('axios');
+var bot = require('./bot');
 
 var app = express();
 
