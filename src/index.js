@@ -35,6 +35,7 @@ var lunchJob = new CronJob('00 00 12 * * 1-5', function() {
   var min = 1;
   var max = 40;
   var rand = Math.floor(Math.random() * (max - min)) + min;
+  console.log('Lunch will be at 12:' + rand);
 
   setTimeout(function() {
     slack.send({text: 'Lunch?'});
