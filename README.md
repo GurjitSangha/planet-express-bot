@@ -9,6 +9,8 @@ WEBHOOK_URL=<slack_incoming_webhook_here>
 ```
 The slack token is used for the full 'bot' part and the webhook is used for the simple bot and cronjob tasks. You can find the token on sky.slack.com/apps. I've created a private test channel on slack and used the webhook from that integration
 
+After that you can run it like any other node app
+
 ## Code
 There are two main parts, the full bot and the simple bot
 
