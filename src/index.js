@@ -28,7 +28,7 @@ app.post('/custom', (req, res) => {
   var message = req.body.message;
   slack.send({text: message});
   res.send('OK');
-})
+});
 
 var lunchJob = new CronJob('00 00 12 * * 1-5', function() {
   // Get a random int between 1 and 40
@@ -40,4 +40,30 @@ var lunchJob = new CronJob('00 00 12 * * 1-5', function() {
   setTimeout(function() {
     slack.send({text: 'Lunch?'});
   }, rand * 60 * 1000);
+}, null, true, 'Europe/London');
+
+var birthdayJob = new CronJob('00 00 09 * * *', function() {
+  var today = new Date();
+  var month = today.getMonth() + 1; // zero indexed
+  var day = today.getDate();
+  var date = day + '/' + month;
+
+  var birthdays = {
+    '6/1': 'Tom',
+    '11/3': 'Rory',
+    '20/4': 'Gary',
+    '28/5': 'Aaron',
+    '8/7': 'Al',
+    '28/8': 'JP',
+    '27/10': 'Joe',
+    '19/11': 'Matt',
+    '26/11': 'Nick',
+    '6/12': 'Hosty',
+    '31/12': 'Mark'
+  }
+
+  if (date in birthdays) {
+    var msg = ':birthday: Happy Birthday ' + birthdays[date] + '! :birthday:';
+    slack.send(msg)
+  }
 }, null, true, 'Europe/London');
