@@ -29,6 +29,18 @@ bot.startRTM(function(err, bot, payload) {
 
     bot.reply(message, parrot);
   });
+
+  // controller.hears(['react'], ['ambient'], function(bot, message) {
+  //   bot.api.reactions.add({
+  //     timestamp: message.ts,
+  //     channel: message.channel,
+  //     name: '-1'
+  //   });
+  // });
+
+  controller.hears([''], ['ambient'], function(bot, message) {
+    console.log('User: ' + message.user + ', message: ' + message.text);
+  });
 })
 
 module.exports = bot;
