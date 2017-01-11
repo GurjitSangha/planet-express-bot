@@ -30,16 +30,14 @@ bot.startRTM(function(err, bot, payload) {
     bot.reply(message, parrot);
   });
 
-  // controller.hears(['react'], ['ambient'], function(bot, message) {
-  //   bot.api.reactions.add({
-  //     timestamp: message.ts,
-  //     channel: message.channel,
-  //     name: '-1'
-  //   });
-  // });
-
   controller.hears([''], ['ambient'], function(bot, message) {
-    console.log('User: ' + message.user + ', message: ' + message.text);
+    if (message.user == 'U1QA4QGP3') {
+      bot.api.reactions.add({
+        timestamp: message.ts,
+        channel: message.channel,
+        name: '-1'
+      });
+    }
   });
 })
 
