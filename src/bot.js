@@ -31,7 +31,7 @@ bot.startRTM(function(err, bot, payload) {
   });
 
   controller.hears([''], ['ambient'], function(bot, message) {
-    if (message.user == 'U1QA4QGP3') {
+    if (message.user == 'U1QA4QGP3' && config('SORRY_RORY') == 'on') {
       bot.api.reactions.add({
         timestamp: message.ts,
         channel: message.channel,
