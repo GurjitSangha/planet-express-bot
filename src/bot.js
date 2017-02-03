@@ -21,9 +21,13 @@ bot.startRTM(function(err, bot, payload) {
   });
 
   controller.hears(['parrot'], ['ambient', 'direct_mention'], function(bot, message) {
-    var parrots = [':parrot:', ':parrot-aussie:', ':parrot-christmas:', 'parrot-deal-with-it', ':parrot-middle:', ':bored_parrot:', ':chill_parrot:',
-      ':parrot-right:', ':parrot-slow:', ':parrotcop:', ':fast_parrot', ':icecream_parrot:', ':confusedparrot:', ':explodingparrot:',
-      ':fiestaparrot:', ':reversecongaparrot:', ':sadparrot:', ':raresiren:'];
+    var parrots = [':parrot:', ':parrot-aussie:', ':parrot-christmas:', 'parrot-deal-with-it',
+      ':parrot-middle:', ':bored_parrot:', ':chill_parrot:', ':parrot-right:', ':parrot-slow:',
+      ':parrotcop:', ':fast_parrot', ':icecream_parrot:', ':confusedparrot:', ':explodingparrot:',
+      ':fiestaparrot:', ':reversecongaparrot:', ':sadparrot:', ':raresiren:', ':coffee-parrot:',
+      ':parrot-blonde-sassy:', ':parrot-fieri:', ':parrot-kebab:', ':parrot-middle:', ':parrot-moustache:',
+      ':parrot-ship-it:', ':parrot-ski:', ':parrot-stable:', ':parrot-triplets:', ':parrot-twins',
+      ':parrot-witness-protection:'];
 
     var parrot = parrots[Math.floor(Math.random() * parrots.length)];
 
