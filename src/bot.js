@@ -4,6 +4,7 @@ var config = require('./config');
 var bot = controller.spawn({
   token: config('SLACK_TOKEN')
 });
+var request = require('request');
 
 bot.startRTM(function(err, bot, payload) {
   if (err)
@@ -23,7 +24,7 @@ bot.startRTM(function(err, bot, payload) {
   controller.hears(['parrot'], ['ambient', 'direct_mention'], function(bot, message) {
     var parrots = [':parrot:', ':parrot-aussie:', ':parrot-christmas:', 'parrot-deal-with-it',
       ':parrot-middle:', ':bored_parrot:', ':chill_parrot:', ':parrot-right:', ':parrot-slow:',
-      ':parrotcop:', ':fast_parrot', ':icecream_parrot:', ':confusedparrot:', ':explodingparrot:',
+      ':parrotcop:', ':fast_parrot:', ':icecream_parrot:', ':confusedparrot:', ':explodingparrot:',
       ':fiestaparrot:', ':reversecongaparrot:', ':sadparrot:', ':raresiren:', ':coffee-parrot:',
       ':parrot-blonde-sassy:', ':parrot-fieri:', ':parrot-kebab:', ':parrot-middle:', ':parrot-moustache:',
       ':parrot-ship-it:', ':parrot-ski:', ':parrot-stable:', ':parrot-triplets:', ':parrot-twins',
@@ -61,6 +62,20 @@ bot.startRTM(function(err, bot, payload) {
     var answer = answers[Math.floor(Math.random() * answers.length)];
 
     bot.reply(message, answer);
+  });
+
+  controller.hears(['insult!'], ['ambient'], function(bot, message) {
+    var split = message.text.split(' ');
+    split.shift();
+    var name = split[0];
+
+    request('http://quandyfactory.com/insult/json', function(err, res, body) {
+      if (res.statusCode == 200) {
+        var json = JSON.parse(body);
+        var insult = name + ', ' + json.insult.charAt(0).toLowerCase() + json.insult.slice(1);
+        bot.reply(message, insult);
+      }
+    })
   });
 
   controller.hears([''], ['ambient'], function(bot, message) {
