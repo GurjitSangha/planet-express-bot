@@ -42,7 +42,7 @@ var lunchJob = new CronJob('00 00 12 * * 1-5', function() {
   }, rand * 60 * 1000);
 }, null, true, 'Europe/London');
 
-var birthdayJob = new CronJob('00 00 09 * * *', function() {
+var birthdayJob = new CronJob('00 30 09 * * *', function() {
   var today = new Date();
   var month = today.getMonth() + 1; // zero indexed
   var day = today.getDate();
@@ -64,7 +64,7 @@ var birthdayJob = new CronJob('00 00 09 * * *', function() {
 
   if (date in birthdays) {
     var msg = ':birthday: Happy Birthday ' + birthdays[date] + '! :birthday:';
-    slack.send(msg)
+    slack.send({text: msg})
   }
 }, null, true, 'Europe/London');
 
