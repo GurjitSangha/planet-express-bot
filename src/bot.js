@@ -28,7 +28,7 @@ bot.startRTM(function(err, bot, payload) {
       ':fiestaparrot:', ':reversecongaparrot:', ':sadparrot:', ':raresiren:', ':coffee-parrot:',
       ':parrot-blonde-sassy:', ':parrot-fieri:', ':parrot-kebab:', ':parrot-middle:', ':parrot-moustache:',
       ':parrot-ship-it:', ':parrot-ski:', ':parrot-stable:', ':parrot-triplets:', ':parrot-twins',
-      ':parrot-witness-protection:'];
+      ':parrot-witness-protection:', ':parrot-nyan', 'potterparrot', 'parrot-burger', 'gentlemanparrot'];
 
     var parrot = parrots[Math.floor(Math.random() * parrots.length)];
 
