@@ -30,18 +30,6 @@ app.post('/custom', (req, res) => {
   res.send('OK');
 });
 
-var lunchJob = new CronJob('00 00 12 * * 1-5', function() {
-  // Get a random int between min and max
-  var min = 1;
-  var max = 30;
-  var rand = Math.floor(Math.random() * (max - min)) + min;
-  console.log('Lunch will be at 12:' + rand);
-
-  setTimeout(function() {
-    slack.send({text: 'Lunch?'});
-  }, rand * 60 * 1000);
-}, null, true, 'Europe/London');
-
 var birthdayJob = new CronJob('00 00 09 * * *', function() {
   var today = new Date();
   var month = today.getMonth() + 1; // zero indexed
