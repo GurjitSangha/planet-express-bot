@@ -57,7 +57,7 @@ var birthdayJob = new CronJob('00 00 09 * * *', function() {
 }, null, true, 'Europe/London');
 
 var fridayJob = new CronJob('00 00 08 * * 5', function() {
-  if (Math.random() < 0.2) {
+  if (Math.random() > 0.2) {
     slack.send({text: 'https://www.youtube.com/watch?v=kfVsfOSbJY0'});
   }
 }, null, true, 'Europe/London');

@@ -35,6 +35,14 @@ bot.startRTM(function(err, bot, payload) {
     bot.reply(message, parrot);
   });
 
+  controller.hears(['rebecca'], ['ambient'], function(bot, message) {
+      bot.api.reactions.add({
+          timestamp: message.ts,
+          channel: message.channel,
+          name: 'rebecca_black-getdownonfriday'
+      })
+  });
+
   controller.hears(['8ball!'], ['ambient'], function(bot, message) {
     var answers = [
       'It is certain',
