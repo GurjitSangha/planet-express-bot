@@ -57,7 +57,10 @@ var birthdayJob = new CronJob('00 00 09 * * *', function() {
 }, null, true, 'Europe/London');
 
 var fridayJob = new CronJob('00 00 08 * * 5', function() {
-  if (Math.random() > 0.2) {
-    slack.send({text: 'https://www.youtube.com/watch?v=kfVsfOSbJY0'});
-  }
+  var videos = [
+    'https://www.youtube.com/watch?v=dP9Wp6QVbsk',
+    'https://www.youtube.com/watch?v=Ppm5_AGtbTo',
+    'https://www.youtube.com/watch?v=_VVmPYx4VDs'
+  ];
+  slack.send({text: ':flag-de: ' + videos[Math.floor(Math.random() * videos.length)] + ' :flag-de:'});
 }, null, true, 'Europe/London');
