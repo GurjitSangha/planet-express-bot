@@ -6,6 +6,8 @@ var slack = new Slack(config('WEBHOOK_URL'));
 var http = require('http');
 var CronJob = require('cron').CronJob;
 var bot = require('./bot');
+var rp = require('request-promise');
+var cheerio = require('cheerio');
 
 var app = express();
 
@@ -64,3 +66,32 @@ var fridayJob = new CronJob('00 00 08 * * 5', function() {
   ];
   slack.send({text: ':flag-de: ' + videos[Math.floor(Math.random() * videos.length)] + ' :flag-de:'});
 }, null, true, 'Europe/London');
+
+var gwotdJob = new CronJob('00 00 10 * * 1-5', function() {
+  var options = {
+    uri: 'https://www.jabbalab.com/word-of-the-day/german',
+    transform: (body) => {
+      return cheerio.load(body);
+    }
+  };
+
+  rp(options)
+    .then(($) => {
+      var phrase = $('.word .text').text();
+      var translation = $('.translation').text();
+      var date = $('.date-of-word').text();
+
+      phrase = phrase.slice(0, phrase.length / 2);
+      translation = translation.slice(0, translation.length / 2);
+
+      slack.send({text: ':flag-de: Word of the day for ' + date + ': ' + 
+                        capFirst(phrase) + ' - ' + capFirst(translation)});
+    })
+    .catch((err) => {
+      console.log(err)
+    });
+}, null, true, 'Europe/London');
+
+function capFirst(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
