@@ -9,7 +9,8 @@ var config = {
   WEBHOOK_URL: process.env.WEBHOOK_URL,
   SLACK_TOKEN: process.env.SLACK_TOKEN,
   FORECAST_TOKEN: process.env.FORECAST_TOKEN,
-  SORRY_RORY: process.env.SORRY_RORY
+  SORRY_RORY: process.env.SORRY_RORY,
+  SLACK_CHANNEL_ID: process.env.SLACK_CHANNEL_ID
 }
 
 module.exports = (key) => {

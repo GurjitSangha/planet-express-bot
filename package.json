@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "engines": {
-    "node": "6.11.1"    
+    "node": "6.11.1"
   },
   "scripts": {
     "start": "node ./src",
@@ -17,11 +17,13 @@
     "axios": "^0.14.0",
     "body-parser": "^1.15.2",
     "botkit": "^0.2.2",
+    "cheerio": "1.0.0-rc.2",
     "cron": "^1.1.1",
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "node-slack": "0.0.7",
-    "request-promise": "4.2.2",
-    "cheerio": "1.0.0-rc.2"
+    "node-slack-upload": "^1.2.1",
+    "request": "^2.85.0",
+    "request-promise": "4.2.2"
   }
 }
