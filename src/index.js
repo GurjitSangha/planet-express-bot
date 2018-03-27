@@ -21,40 +21,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => { 
-  var options = {
-    uri: 'https://www.jabbalab.com/word-of-the-day/german',
-    transform: (body) => {
-      return cheerio.load(body);
-    }
-  };
-
-  rp(options)
-    .then(($) => {
-      // var phrase = cutInHalf($('.word .text').text());
-      // var translation = cutInHalf($('.translation').text());
-      // var date = $('.date-of-word').text();
-      // slack.send({text: ':flag-de: Word of the day for ' + date + ': ' + 
-      //                   capFirst(phrase) + ' - ' + capFirst(translation)});
-
-      // var phrase = cutInHalf($('.word .text').text());
-      // var raw = $('.word').html()
-      // var start = raw.indexOf('/audio/german')
-      // var end = raw.indexOf('"', start)
-      // var phraseUrl = 'http://www.jabbalab.com' + raw.substring(start, end)
-      // saveAndUploadMP3(phraseUrl, phrase)
-
-      // var origSentence = cutInHalf($('.sentence-row .original').text());
-      // var tranSentence = cutInHalf($('.sentence-row .translated').text());
-      // var insertPos = phraseUrl.length - 4;
-      // var sentenceUrl = [phraseUrl.slice(0, insertPos), 'sentence', phraseUrl.slice(insertPos)].join('');  
-      // slack.send({text: origSentence + ' => ' + tranSentence})
-      // saveAndUploadMP3(sentenceUrl, 'In a sentence')
-    })
-    .catch((err) => {
-      console.log(err)
-    });
-  res.send('ok');
- });
+  res.send('\n👋 🌍\n');
+});
 
 app.listen(config('PORT'), (err) => {
   if (err) throw err
@@ -129,13 +97,17 @@ var gwotdJob = new CronJob('00 00 10 * * 1-5', function() {
       var end = raw.indexOf('"', start)
       var phraseUrl = 'http://www.jabbalab.com' + raw.substring(start, end)
       saveAndUploadMP3(phraseUrl, phrase)
-
-      // var origSentence = cutInHalf($('.sentence-row .original').text());
-      // var tranSentence = cutInHalf($('.sentence-row .translated').text());
-      // var insertPos = phraseUrl.length - 4;
-      // var sentenceUrl = [phraseUrl.slice(0, insertPos), 'sentence', phraseUrl.slice(insertPos)].join('');  
-      // slack.send({text: origSentence + ' => ' + tranSentence})
-      // saveAndUploadMP3(sentenceUrl, 'In a sentence')
+        .then((data) => {
+          var origSentence = cutInHalf($('.sentence-row .original').text());
+          var tranSentence = cutInHalf($('.sentence-row .translated').text());
+          var insertPos = phraseUrl.length - 4;
+          var sentenceUrl = [phraseUrl.slice(0, insertPos), 'sentence', phraseUrl.slice(insertPos)].join('');  
+          slack.send({text: 'In a sentence - ' + origSentence + ' :arrow-right: ' + tranSentence})
+          saveAndUploadMP3(sentenceUrl, origSentence)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     })
     .catch((err) => {
       console.log(err)
@@ -144,20 +116,22 @@ var gwotdJob = new CronJob('00 00 10 * * 1-5', function() {
 
 function saveAndUploadMP3(url, title) {
   var file = fs.createWriteStream("file.mp3");
-  var mp3Request = http.get(url, (response) => {
-    response.pipe(file);
-    
-    file.on('finish', () => {
-      slackUpload.uploadFile({
-        file: fs.createReadStream(path.join(__dirname, '..', 'file.mp3')),
-        fileType: 'mp3',
-        title: title,
-        channels: config('SLACK_CHANNEL_ID')
-      }, (err, data) => {
-        if (err)
-          console.log(err);
-        else
-          console.log('Uploaded file ', data)
+  return new Promise((resolve, reject) => {
+    http.get(url, (response) => {
+      response.pipe(file);
+      
+      file.on('finish', () => {
+        slackUpload.uploadFile({
+          file: fs.createReadStream(path.join(__dirname, '..', 'file.mp3')),
+          fileType: 'mp3',
+          title: title,
+          channels: config('SLACK_CHANNEL_ID')
+        }, (err, data) => {
+          if (err)
+            reject(new Error(err));
+          else
+            resolve(data);
+        });
       });
     });
   });
