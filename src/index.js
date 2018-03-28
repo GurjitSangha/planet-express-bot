@@ -102,7 +102,7 @@ var gwotdJob = new CronJob('00 00 10 * * 1-5', function() {
           var tranSentence = cutInHalf($('.sentence-row .translated').text());
           var insertPos = phraseUrl.length - 4;
           var sentenceUrl = [phraseUrl.slice(0, insertPos), 'sentence', phraseUrl.slice(insertPos)].join('');  
-          slack.send({text: 'In a sentence - ' + origSentence + ' :arrow-right: ' + tranSentence})
+          slack.send({text: 'In a sentence - ' + origSentence + ' => ' + tranSentence})
           saveAndUploadMP3(sentenceUrl, origSentence)
         })
         .catch((error) => {
