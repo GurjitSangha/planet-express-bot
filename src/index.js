@@ -88,22 +88,21 @@ var gwotdJob = new CronJob('00 00 10 * * 1-5', function() {
       var translation = cutInHalf($('.translation').text());
       var date = $('.date-of-word').text();
 
-      slack.send({text: ':flag-de: Word of the day for ' + date + ': ' + 
-                        capFirst(phrase) + ' - ' + capFirst(translation)});
+      var text = ':flag-de: Word of the day for ' + date + ': ' + 
+                  capFirst(phrase) + ' - ' + capFirst(translation);
 
       var phrase = cutInHalf($('.word .text').text());
       var raw = $('.word').html()
       var start = raw.indexOf('/audio/german')
       var end = raw.indexOf('"', start)
       var phraseUrl = 'http://www.jabbalab.com' + raw.substring(start, end)
-      saveAndUploadMP3(phraseUrl, phrase)
+      saveAndUploadMP3(phraseUrl, capFirst(phrase), text)
         .then((data) => {
           var origSentence = cutInHalf($('.sentence-row .original').text());
           var tranSentence = cutInHalf($('.sentence-row .translated').text());
           var insertPos = phraseUrl.length - 4;
           var sentenceUrl = [phraseUrl.slice(0, insertPos), 'sentence', phraseUrl.slice(insertPos)].join('');  
-          slack.send({text: 'In a sentence - ' + origSentence + ' => ' + tranSentence})
-          saveAndUploadMP3(sentenceUrl, origSentence)
+          saveAndUploadMP3(sentenceUrl, origSentence, tranSentence)
         })
         .catch((error) => {
           console.log(error)
@@ -114,19 +113,23 @@ var gwotdJob = new CronJob('00 00 10 * * 1-5', function() {
     });
 }, null, true, 'Europe/London');
 
-function saveAndUploadMP3(url, title) {
+function saveAndUploadMP3(url, title, comment) {
   var file = fs.createWriteStream("file.mp3");
   return new Promise((resolve, reject) => {
     http.get(url, (response) => {
       response.pipe(file);
       
       file.on('finish', () => {
-        slackUpload.uploadFile({
+        options = {
           file: fs.createReadStream(path.join(__dirname, '..', 'file.mp3')),
           fileType: 'mp3',
           title: title,
-          channels: config('SLACK_CHANNEL_ID')
-        }, (err, data) => {
+          channels: config('SLACK_CHANNEL_ID'),
+        };
+        if (comment) {
+          options['initialComment'] = comment
+        }
+        slackUpload.uploadFile(options, (err, data) => {
           if (err)
             reject(new Error(err));
           else
