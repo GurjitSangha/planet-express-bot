@@ -99,9 +99,11 @@ var gwotdJob = new CronJob('00 00 10 * * 1-5', function() {
         .then((data) => {
           var origSentence = cutInHalf($('.sentence-row .original').text());
           var tranSentence = cutInHalf($('.sentence-row .translated').text());
+          var directSentence = cutInHalf($('.sentence-row .dt').text());
+          var comment = tranSentence + ' (Direct: ' + directSentence + ')';
           var insertPos = phraseUrl.length - 4;
           var sentenceUrl = [phraseUrl.slice(0, insertPos), 'sentence', phraseUrl.slice(insertPos)].join('');  
-          saveAndUploadMP3(sentenceUrl, origSentence, tranSentence)
+          saveAndUploadMP3(sentenceUrl, origSentence, comment);
         })
         .catch((error) => {
           console.log(error)
