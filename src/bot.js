@@ -27,10 +27,10 @@ bot.startRTM(function(err, bot, payload) {
       ':parrotcop:', ':fast_parrot:', ':icecream_parrot:', ':confusedparrot:', ':explodingparrot:',
       ':fiestaparrot:', ':reversecongaparrot:', ':sadparrothd:', ':raresiren:', ':coffee-parrot:',
       ':parrot-blonde-sassy:', ':parrot-fieri:', ':parrot-kebab:', ':parrot-middle:', ':parrot-moustache:',
-      ':parrot-ship-it:', ':parrot-ski:', ':parrot-stable:', ':parrot-triplets:', ':parrot-twins',
-      ':parrot-witness-protection:', ':parrot-nyan', ':potterparrot:', ':parrot-burger:', ':gentlemanparrot:',
-      'discoparrot', 'evilparrot', 'matrixparrot', 'parrot-burger', 'parrot-kebab', 'parrot-old',
-      'parrot-om-nom-nom', 'parrothd', 'revolutionparrot', 'shuffleparrothd', 'thumbsupparrot'];
+      ':parrot-ship-it:', ':parrot-ski:', ':parrot-stable:', ':parrot-triplets:', ':parrot-twins:',
+      ':parrot-witness-protection:', ':parrot-nyan:', ':potterparrot:', ':parrot-burger:', ':gentlemanparrot:',
+      ':discoparrot:', ':evilparrot:', ':matrixparrot:', ':parrot-burger:', ':parrot-kebab:', ':parrot-old:',
+      ':parrot-om-nom-nom:', ':parrothd:', ':revolutionparrot:', ':shuffleparrothd:', ':thumbsupparrot:'];
 
     var parrot = parrots[Math.floor(Math.random() * parrots.length)];
 
