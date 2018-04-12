@@ -20,7 +20,7 @@ var app = express();
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.get('/', (req, res) => { 
+app.get('/', (req, res) => {
   res.send('\n👋 🌍\n');
 });
 
@@ -66,11 +66,16 @@ var birthdayJob = new CronJob('00 00 09 * * *', function() {
   }
 }, null, true, 'Europe/London');
 
-var fridayJob = new CronJob('00 00 08 * * 5', function() {
-  var videos = [
-    'https://www.youtube.com/watch?v=dP9Wp6QVbsk'
-  ];
-  // slack.send({text: 'The last :flag-de: Friday' + videos[Math.floor(Math.random() * videos.length)] + ' :flag-de:'});
+var fridayJob = new CronJob('00 00 09 * * 5', function() {
+  request('https://www.reddit.com/r/videos/top.json?sort=top&t=week', (err, response, data) => {
+    if (!err && response.statusCode == 200) {
+      var jsonData = JSON.parse(data);
+      var firstResult = jsonData.data.children[0].data;
+      slack.send({text: "This week's top voted video on /r/videos: " + firstResult.title + " " + firstResult.url});
+    } else {
+      console.log(err);
+    }
+  })
 }, null, true, 'Europe/London');
 
 var gwotdJob = new CronJob('00 50 09 * * 1-5', function() {
