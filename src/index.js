@@ -73,7 +73,8 @@ var fridayJob = new CronJob('00 00 08 * * 5', function() {
   // slack.send({text: 'The last :flag-de: Friday' + videos[Math.floor(Math.random() * videos.length)] + ' :flag-de:'});
 }, null, true, 'Europe/London');
 
-var gwotdJob = new CronJob('00 00 10 * * 1-5', function() {
+var gwotdJob = new CronJob('00 50 09 * * 1-5', function() {
+  return;
   var options = {
     uri: 'https://www.jabbalab.com/word-of-the-day/german',
     transform: (body) => {
