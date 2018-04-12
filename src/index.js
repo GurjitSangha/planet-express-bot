@@ -87,7 +87,7 @@ var gwotdJob = new CronJob('00 00 10 * * 1-5', function() {
       var translation = cutInHalf($('.translation').text());
       var date = $('.date-of-word').text();
 
-      var text = ':flag-de: Word of the day for ' + date + ': ' + 
+      var text = 'The final :flag-de: Word of the day for ' + date + ': ' + 
                   capFirst(phrase) + ' - ' + capFirst(translation);
 
       var phrase = cutInHalf($('.word .text').text());
