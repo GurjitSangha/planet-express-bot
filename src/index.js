@@ -72,10 +72,9 @@ var fridayJob = new CronJob('00 00 09 * * 5', function() {
   }
 }, null, true, 'Europe/London');
 
-var gwotdJob = new CronJob('00 50 09 * * 1-5', function() {
-  return;
+var tamilJob = new CronJob('00 00 09 * * 1-5', function() {
   var options = {
-    uri: 'https://www.jabbalab.com/word-of-the-day/german',
+    uri: 'https://agarathi.com/wod',
     transform: (body) => {
       return cheerio.load(body);
     }
@@ -83,68 +82,87 @@ var gwotdJob = new CronJob('00 50 09 * * 1-5', function() {
 
   rp(options)
     .then(($) => {
-      var phrase = cutInHalf($('.word .text').text());
-      var translation = cutInHalf($('.translation').text());
-      var date = $('.date-of-word').text();
+      const tamil = $('.timeline-title').first().text().trim();
+      const desc = $('.description').first().text().trim();
 
-      var text = 'The final :flag-de: Word of the day for ' + date + ': ' + 
-                  capFirst(phrase) + ' - ' + capFirst(translation);
-
-      var phrase = cutInHalf($('.word .text').text());
-      var raw = $('.word').html()
-      var start = raw.indexOf('/audio/german')
-      var end = raw.indexOf('"', start)
-      var phraseUrl = 'http://www.jabbalab.com' + raw.substring(start, end)
-      saveAndUploadMP3(phraseUrl, capFirst(phrase), text)
-        .then((data) => {
-          var origSentence = cutInHalf($('.sentence-row .original').text());
-          var tranSentence = cutInHalf($('.sentence-row .translated').text());
-          var directSentence = cutInHalf($('.sentence-row .dt').text());
-          var comment = tranSentence + ' (Direct: ' + directSentence + ')';
-          var insertPos = phraseUrl.length - 4;
-          var sentenceUrl = [phraseUrl.slice(0, insertPos), 'sentence', phraseUrl.slice(insertPos)].join('');  
-          saveAndUploadMP3(sentenceUrl, origSentence, comment);
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      slack.send({ text: `Today's Tamil word of the day is ${tamil} - ${desc}` });
+      res.send(`Today's Tamil word of the day is ${tamil} - ${desc}`);
     })
-    .catch((err) => {
-      console.log(err)
-    });
-}, null, true, 'Europe/London');
+});
 
-function saveAndUploadMP3(url, title, comment) {
-  var file = fs.createWriteStream("file.mp3");
-  return new Promise((resolve, reject) => {
-    http.get(url, (response) => {
-      response.pipe(file);
+// var gwotdJob = new CronJob('00 50 09 * * 1-5', function() {
+//   return;
+//   var options = {
+//     uri: 'https://www.jabbalab.com/word-of-the-day/german',
+//     transform: (body) => {
+//       return cheerio.load(body);
+//     }
+//   };
+
+//   rp(options)
+//     .then(($) => {
+//       var phrase = cutInHalf($('.word .text').text());
+//       var translation = cutInHalf($('.translation').text());
+//       var date = $('.date-of-word').text();
+
+//       var text = 'The final :flag-de: Word of the day for ' + date + ': ' + 
+//                   capFirst(phrase) + ' - ' + capFirst(translation);
+
+//       var phrase = cutInHalf($('.word .text').text());
+//       var raw = $('.word').html()
+//       var start = raw.indexOf('/audio/german')
+//       var end = raw.indexOf('"', start)
+//       var phraseUrl = 'http://www.jabbalab.com' + raw.substring(start, end)
+//       saveAndUploadMP3(phraseUrl, capFirst(phrase), text)
+//         .then((data) => {
+//           var origSentence = cutInHalf($('.sentence-row .original').text());
+//           var tranSentence = cutInHalf($('.sentence-row .translated').text());
+//           var directSentence = cutInHalf($('.sentence-row .dt').text());
+//           var comment = tranSentence + ' (Direct: ' + directSentence + ')';
+//           var insertPos = phraseUrl.length - 4;
+//           var sentenceUrl = [phraseUrl.slice(0, insertPos), 'sentence', phraseUrl.slice(insertPos)].join('');  
+//           saveAndUploadMP3(sentenceUrl, origSentence, comment);
+//         })
+//         .catch((error) => {
+//           console.log(error)
+//         })
+//     })
+//     .catch((err) => {
+//       console.log(err)
+//     });
+// }, null, true, 'Europe/London');
+
+// function saveAndUploadMP3(url, title, comment) {
+//   var file = fs.createWriteStream("file.mp3");
+//   return new Promise((resolve, reject) => {
+//     http.get(url, (response) => {
+//       response.pipe(file);
       
-      file.on('finish', () => {
-        options = {
-          file: fs.createReadStream(path.join(__dirname, '..', 'file.mp3')),
-          fileType: 'mp3',
-          title: title,
-          channels: config('SLACK_CHANNEL_ID'),
-        };
-        if (comment) {
-          options['initialComment'] = comment
-        }
-        slackUpload.uploadFile(options, (err, data) => {
-          if (err)
-            reject(new Error(err));
-          else
-            resolve(data);
-        });
-      });
-    });
-  });
-}
+//       file.on('finish', () => {
+//         options = {
+//           file: fs.createReadStream(path.join(__dirname, '..', 'file.mp3')),
+//           fileType: 'mp3',
+//           title: title,
+//           channels: config('SLACK_CHANNEL_ID'),
+//         };
+//         if (comment) {
+//           options['initialComment'] = comment
+//         }
+//         slackUpload.uploadFile(options, (err, data) => {
+//           if (err)
+//             reject(new Error(err));
+//           else
+//             resolve(data);
+//         });
+//       });
+//     });
+//   });
+// }
 
-function capFirst(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
+// function capFirst(str) {
+//   return str.charAt(0).toUpperCase() + str.slice(1);
+// }
 
-function cutInHalf(str) {
-  return str.slice(0, str.length / 2)
-}
+// function cutInHalf(str) {
+//   return str.slice(0, str.length / 2)
+// }
