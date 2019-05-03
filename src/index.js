@@ -88,7 +88,7 @@ var tamilJob = new CronJob('00 00 09 * * 1-5', function() {
       slack.send({ text: `Today's Tamil word of the day is ${tamil} - ${desc}` });
       res.send(`Today's Tamil word of the day is ${tamil} - ${desc}`);
     })
-});
+}, null, true, 'Europe/London');
 
 // var gwotdJob = new CronJob('00 50 09 * * 1-5', function() {
 //   return;
