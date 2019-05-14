@@ -72,23 +72,23 @@ var fridayJob = new CronJob('00 00 09 * * 5', function() {
   }
 }, null, true, 'Europe/London');
 
-var tamilJob = new CronJob('00 00 09 * * 1-5', function() {
-  var options = {
-    uri: 'https://agarathi.com/wod',
-    transform: (body) => {
-      return cheerio.load(body);
-    }
-  };
+// var tamilJob = new CronJob('00 00 09 * * 1-5', function() {
+//   var options = {
+//     uri: 'https://agarathi.com/wod',
+//     transform: (body) => {
+//       return cheerio.load(body);
+//     }
+//   };
 
-  rp(options)
-    .then(($) => {
-      const tamil = $('.timeline-title').first().text().trim();
-      const desc = $('.description').first().text().trim();
+//   rp(options)
+//     .then(($) => {
+//       const tamil = $('.timeline-title').first().text().trim();
+//       const desc = $('.description').first().text().trim();
 
-      slack.send({ text: `Today's Tamil word of the day is ${tamil} - ${desc}` });
-      res.send(`Today's Tamil word of the day is ${tamil} - ${desc}`);
-    })
-}, null, true, 'Europe/London');
+//       slack.send({ text: `Today's Tamil word of the day is ${tamil} - ${desc}` });
+//       res.send(`Today's Tamil word of the day is ${tamil} - ${desc}`);
+//     })
+// }, null, true, 'Europe/London');
 
 // var gwotdJob = new CronJob('00 50 09 * * 1-5', function() {
 //   return;
